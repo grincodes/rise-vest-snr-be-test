@@ -1,0 +1,11 @@
+.vscode
+out/
+dist/
+test-fixtures/
+node_modules/
+src/tests
+*.spec.ts
+*.config.js
+src/**/migrations
+src/**/models
+src/**/*.js
