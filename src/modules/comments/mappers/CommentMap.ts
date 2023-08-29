@@ -10,7 +10,7 @@ export class CommentMap {
       id: uuid(),
       postId: dto.postId,
       userId: dto.userId,
-      comment: dto.comment,
+      content: dto.content,
     }
   }
 
@@ -19,7 +19,7 @@ export class CommentMap {
       id: comment.id.toString(),
       userId: comment.userId,
       postId: comment.postId,
-      comment: comment.comment,
+      content: comment.content,
     }
   }
 
@@ -28,7 +28,7 @@ export class CommentMap {
       {
         userId: raw.userId,
         postId: raw.postId,
-        comment: raw.comment,
+        content: raw.content,
       },
       new UniqueEntityID(raw.id),
     )

@@ -13,8 +13,7 @@ import { authUser, jwtAuth } from "../../../modules/auth/infra/passport/passport
 import { Strategy as JwtStrategy } from "passport-jwt"
 import { ExtractJwt } from "passport-jwt"
 import cookieParser from "cookie-parser"
-import { GenericAppError } from "../../core/logic/AppError"
-import { DomainError } from "../../core/logic/DomainError"
+
 
 const app = express()
 
@@ -59,20 +58,6 @@ app.use("/api/v1", v1Router)
 
 // New api versions can go here
 
-//handle errors
-// app.use((error, req, res, next) => {
-//   switch (error.constructor) {
-//     case GenericAppError.UnexpectedError:
-//       res.status(409).json({ message: error.errorValue().message || "Unexpected Error" })
-//     case GenericAppError.NotFoundError:
-//       res.status(404).json({ message: error.errorValue().message || "Does not exist" })
-//     case DomainError:
-//       res.status(400).json({ message: error.errorValue().message || "Invalid Request" })
-
-//     default:
-//       res.status(500).json({ message: error.errorValue().message || "Internal Server Error" })
-//   }
-// })
 
 // initialize db
 dataService
@@ -80,13 +65,15 @@ dataService
   .then(() => {
     console.log("Db💾 connected...")
 
-    app.listen(Config.PORT || 4000, () => {
+    app.listen(Config.PORT || 400, () => {
       console.log(`[App]: Server listening on ${Config.PORT}`)
     })
   })
   .catch((err) => {
     console.log(err.message)
   })
+
+
 
 process.on("SIGINT", () => {
   dataService.destroy()

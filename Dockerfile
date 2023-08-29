@@ -48,4 +48,4 @@ RUN npm install --prod
 
 COPY --from=development /usr/src/dist ./dist
 
-CMD ["node", "dist/bin/wwww"]
+CMD ["npm", "run", "start"]

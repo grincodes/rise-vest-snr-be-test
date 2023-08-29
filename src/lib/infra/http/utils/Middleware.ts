@@ -30,12 +30,5 @@ export class Middleware {
     return res.status(status).send({ message })
   }
 
-  // public static createRateLimit(mins: number, maxRequests: number) {
-  //   return rateLimit({
-  //     windowMs: mins * 60 * 1000,
-  //     max: maxRequests,
-  //     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  //     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  //   })
-  // }
+
 }

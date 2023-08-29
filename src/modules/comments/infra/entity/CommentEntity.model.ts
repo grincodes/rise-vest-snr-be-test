@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
 import { BaseEntity } from "../../../../lib/infra/db/BaseEntity"
 import { Posts } from "../../../posts/infra/entity/PostEntity.model"
 import { Users } from "../../../users/infra/entity/UserEntity.model"
@@ -15,7 +15,7 @@ export class Comments extends BaseEntity {
   userId: string
 
   @Column()
-  comment: string
+  content: string
 
   @ManyToOne(() => Posts, (post) => post.comment)
   @JoinColumn({ name: "postId" })

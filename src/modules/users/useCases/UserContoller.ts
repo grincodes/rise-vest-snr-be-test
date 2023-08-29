@@ -50,4 +50,6 @@ export class UserController extends BaseController {
       this.fail(err)
     }
   }
+
+
 }

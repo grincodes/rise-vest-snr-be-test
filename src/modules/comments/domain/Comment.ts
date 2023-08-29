@@ -9,7 +9,7 @@ import { Entity } from "../../../lib/core/domain/Entity"
 export interface CommentProps {
   userId: string
   postId: string
-  comment: string
+  content: string
 }
 
 export class CommentGuard {
@@ -22,7 +22,7 @@ export class CommentGuard {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  comment: string
+  content: string
 }
 
 export class Comment extends Entity<CommentProps> {
@@ -42,8 +42,8 @@ export class Comment extends Entity<CommentProps> {
     return this.props.postId
   }
 
-  get comment(): string {
-    return this.props.comment
+  get content(): string {
+    return this.props.content
   }
 
   public static create(props: CommentProps, id?: UniqueEntityID): Result<Comment> {

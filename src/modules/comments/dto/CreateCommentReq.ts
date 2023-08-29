@@ -4,5 +4,5 @@ export class CreateCommentReq {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  comment: string
+  content: string
 }

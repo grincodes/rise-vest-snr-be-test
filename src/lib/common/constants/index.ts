@@ -11,6 +11,12 @@ export interface CreateResponse {
   status?: string
 }
 
+export  interface LatestPosts {
+   id:string,
+   firstName:string
+   title:string
+   createdAt:string
+}
 export interface UsersPaginatedResponse {
   users: Users[]
   pagination: {

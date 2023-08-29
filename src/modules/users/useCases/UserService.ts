@@ -1,5 +1,5 @@
 
-import { CreateResponse, UsersPaginatedResponse } from "../../../lib/common/constants"
+import { CreateResponse, LatestPosts, UsersPaginatedResponse } from "../../../lib/common/constants"
 import { GenericAppError } from "../../../lib/core/logic/AppError"
 import { DomainError } from "../../../lib/core/logic/DomainError"
 import { Either, Result, left, right } from "../../../lib/core/logic/Result"
@@ -11,7 +11,7 @@ import { UserRepo } from "../infra/repo/UserRepo"
 
 type Response = Either<
   GenericAppError.UnexpectedError | GenericAppError.NotFoundError | UserErrors.AccountAlreadyExists | UserErrors.InvalidCredentials | DomainError,
-  Result<User> | Result<CreateResponse> | Result<UsersPaginatedResponse>
+  Result<User> | Result<CreateResponse> | Result<UsersPaginatedResponse> | Result<LatestPosts[]>
 >
 
 export class UserService {
@@ -97,4 +97,6 @@ export class UserService {
       throw error
     }
   }
+
+
 }

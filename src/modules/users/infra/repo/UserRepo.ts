@@ -82,22 +82,7 @@ export class UserRepo extends AbstractRepo<Users> implements IUserRepo {
     }
   }
 
-  public async getTop3UsersWithLatestCommentsAndPosts(): Promise<any[]> {
-    const queryBuilder = await readConnection
-      .getRepository(Users)
-      .createQueryBuilder("user")
-      .innerJoin(
-        (subQuery: SelectQueryBuilder<Comments>) => subQuery.from(Comments, "comment").select("MAX(comment.createdAt)", "createdAt").addSelect("comment.userId", "userId").groupBy("comment.userId"),
-        "latestComments",
-        "user.id = latestComments.userId",
-      )
-      .innerJoin("user.posts", "posts")
-      .select(["user.id", "user.name", "posts.title", "latestComments.createdAt"])
-      .orderBy("latestComments.createdAt", "DESC")
-      .limit(3)
-
-    return queryBuilder.getRawMany()
-  }
+ 
 
   getPagination = (page: number = this.DEFAULT_PAGE, size: number = this.DEFAULT_SIZE) => {
     const limit = +size

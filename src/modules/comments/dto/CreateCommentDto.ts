@@ -4,7 +4,7 @@ export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  comment: string
+  content: string
 
   @IsUUID("4")
   postId: string

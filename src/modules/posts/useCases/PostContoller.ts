@@ -47,6 +47,18 @@ export class PostController extends BaseController {
     }
   }
 
+
+    async getTop3UsersWithLatestCommentsAndPosts():Promise<any>{
+     
+    try {
+      const result = await this.postService.getTop3UsersWithLatestCommentsAndPosts()
+      const resultVal = result.value
+      return this.ok(this.res, resultVal.getValue())
+    } catch (err) {
+      this.fail(err)
+    }
+  } 
+
   async getUserPaginatedPosts(): Promise<any> {
     try {
       const dto = this.req.query

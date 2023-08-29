@@ -18,6 +18,10 @@ userRouter.get("/", (req: any, res) => {
   userController.execute(req, res, () => userController.getAllPaginatedUsers())
 })
 
+userRouter.get("/top3-users", (req: any, res) => {
+  userController.execute(req, res, () => userController.getAllPaginatedUsers())
+})
+
 //create post
 userRouter.post("/:id/posts", [middleware.validateDto(CreatePostReq), middleware.checkAuthToken, passport.authenticate("jwt", { session: false })], (req: any, res) => {
   postController.execute(req, res, () => postController.createPost())

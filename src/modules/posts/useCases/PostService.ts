@@ -1,4 +1,4 @@
-import { CreateResponse, UserPostsPaginatedResponse } from "../../../lib/common/constants"
+import { CreateResponse, LatestPosts, UserPostsPaginatedResponse } from "../../../lib/common/constants"
 import { GenericAppError } from "../../../lib/core/logic/AppError"
 import { DomainError } from "../../../lib/core/logic/DomainError"
 import { Either, Result, left, right } from "../../../lib/core/logic/Result"
@@ -8,7 +8,7 @@ import { PostRepo } from "../infra/repo/PostRepo"
 import { PostMap } from "../mappers/PostMap"
 import "reflect-metadata"
 
-type Response = Either<GenericAppError.UnexpectedError | DomainError, Result<boolean> | Result<Post> | Result<CreateResponse> | Result<UserPostsPaginatedResponse>>
+type Response = Either<GenericAppError.UnexpectedError | DomainError, Result<boolean> | Result<Post> | Result<CreateResponse> |Result<LatestPosts[]>  |Result<UserPostsPaginatedResponse>>
 
 export class PostService {
   private postRepo: PostRepo
@@ -58,5 +58,16 @@ export class PostService {
     }
   }
 
+    async getTop3UsersWithLatestCommentsAndPosts():Promise<Response>{
+       try {
+      const res = await this.postRepo.getTop3UsersWithLatestCommentsAndPosts()
+
+     
+
+      return right(Result.ok<LatestPosts[]>(res))
+    } catch (error) {
+      return left(error) as Response
+    }
+  }
   
 }
