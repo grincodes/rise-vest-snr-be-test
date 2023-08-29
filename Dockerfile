@@ -1,51 +1,15 @@
-FROM node:18-alpine As development
+FROM node:alpine
 
-WORKDIR /usr/src
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+RUN npm install
 
 COPY . .
 
-RUN npm install -r 
-
-RUN npm run build 
-
-FROM node:alpine as production
-
-ARG NODE_ENV
-ARG PORT
-ARG DATABASE_USER
-ARG DATABASE_PASSWORD
-ARG DATABASE_HOST
-ARG DATABASE_NAME
-ARG DATABASE_PORT
-ARG DATABASE_SYNC
-ARG JWT_SECRET
-ARG JWT_EXPIRATION
+RUN npm run build
 
 
-ENV NODE_ENV=${NODE_ENV}
-ENV PORT=${PORT}
-ENV DATABASE_USER=$D{ATABASE_USER}
-ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
-ENV DATABASE_HOST=${DATABASE_HOST}
-ENV DATABASE_NAME=${DATABASE_NAME}
-ENV DATABASE_PORT=${DATABASE_PORT}
-ENV DATABASE_SYNC=${DATABASE_SYNC}
-ENV JWT_SECRET=${JWT_SECRET}
-ENV JWT_EXPIRATION=${JWT_EXPIRATION}
-
-
-
-
-
-WORKDIR /usr/src
-
-COPY package.json ./
-
-
-RUN npm install -g pnpm
-
-RUN npm install --prod
-
-COPY --from=development /usr/src/dist ./dist
-
-CMD ["npm", "run", "start"]
+CMD ["node", "dist/bin/www"]
