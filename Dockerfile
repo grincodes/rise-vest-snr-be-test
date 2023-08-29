@@ -4,11 +4,9 @@ WORKDIR /usr/src
 
 COPY . .
 
-RUN npm install -g pnpm
+RUN npm install -r 
 
-RUN pnpm install -r 
-
-RUN pnpm run build 
+RUN npm run build 
 
 FROM node:alpine as production
 
@@ -33,7 +31,7 @@ ENV DATABASE_NAME=${DATABASE_NAME}
 ENV DATABASE_PORT=${DATABASE_PORT}
 ENV DATABASE_SYNC=${DATABASE_SYNC}
 ENV JWT_SECRET=${JWT_SECRET}
-ENV JWT_EXPIRATION=${JWT_EXPIRATION}}
+ENV JWT_EXPIRATION=${JWT_EXPIRATION}
 
 
 
@@ -42,11 +40,11 @@ ENV JWT_EXPIRATION=${JWT_EXPIRATION}}
 WORKDIR /usr/src
 
 COPY package.json ./
-COPY pnpm-lock.yaml ./
+
 
 RUN npm install -g pnpm
 
-RUN pnpm install --prod
+RUN npm install --prod
 
 COPY --from=development /usr/src/dist ./dist
 
