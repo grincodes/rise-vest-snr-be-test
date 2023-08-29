@@ -1,4 +1,4 @@
-import { IsBoolean, IsInt, IsString, validateSync } from "class-validator"
+import { IsBoolean, IsInt, IsNumber, IsString, validateSync } from "class-validator"
 
 import dotenv = require("dotenv")
 dotenv.config()
@@ -27,6 +27,9 @@ class Configuration {
 
   @IsString()
   readonly JWT_SECRET = process.env.JWT_SECRET
+
+  @IsNumber()
+  readonly JWT_EXPIRATION = +process.env.JWT_EXPIRATION 
 
   @IsBoolean()
   readonly DATABASE_SYNC = process.env.DATABASE_SYNC === "true"

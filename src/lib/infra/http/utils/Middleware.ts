@@ -1,34 +1,41 @@
-import rateLimit from "express-rate-limit"
+// import rateLimit from "express-rate-limit"
+import { plainToInstance } from "class-transformer"
+import { RequestHandler } from "express"
+import { Guard } from "../../../core/logic/Guard"
 
 export class Middleware {
-  // private authService: IAuthService
+  public validateDto(dtoClass: any): RequestHandler {
+    return async (req, res, next) => {
+      const dtoInstance = plainToInstance(dtoClass, req.body)
 
-  // constructor(authService: IAuthService) {
-  //   this.authService = authService
-  // }
+      const error = Guard.validateAndError(dtoInstance)
+
+      if (error) {
+        return this.endRequest(400, error.errMsg, res)
+      }
+
+      next()
+    }
+  }
+
+  public checkAuthToken = (req, res, next) => {
+    if (!req?.headers.authorization) {
+      return this.endRequest(401, "no auth token provided", res)
+    }
+
+    next()
+  }
 
   private endRequest(status: 400 | 401 | 403, message: string, res: any): any {
     return res.status(status).send({ message })
   }
 
-  public static createRateLimit(mins: number, maxRequests: number) {
-    return rateLimit({
-      windowMs: mins * 60 * 1000,
-      max: maxRequests,
-      standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-      legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-    })
-  }
-
-  public ensureWebHookIsFromFlutterWave() {
-    return async (req, res, next) => {
-      const secretHash = process.env.FLW_SECRET_HASH
-      const signature = req.headers["verif-hash"]
-      if (!signature || signature !== secretHash) {
-        // This request isn't from Flutterwave; discard
-        this.endRequest(403, "Invalid request source", res)
-      }
-      return next()
-    }
-  }
+  // public static createRateLimit(mins: number, maxRequests: number) {
+  //   return rateLimit({
+  //     windowMs: mins * 60 * 1000,
+  //     max: maxRequests,
+  //     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  //     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  //   })
+  // }
 }

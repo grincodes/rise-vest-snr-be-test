@@ -16,4 +16,19 @@ export namespace GenericAppError {
       return new UnexpectedError(err)
     }
   }
+
+  export class NotFoundError extends Result<UseCaseError> {
+    public constructor(msg: string, err?: any) {
+      super(false, {
+        message: msg,
+        error: err,
+      } as UseCaseError)
+      console.log(`[AppError]: An unexpected error occurred`)
+      console.error(err)
+    }
+
+    public static create(msg: string): NotFoundError {
+      return new NotFoundError(msg)
+    }
+  }
 }

@@ -1,0 +1,53 @@
+FROM node:18-alpine As development
+
+WORKDIR /usr/src
+
+COPY . .
+
+RUN npm install -g pnpm
+
+RUN pnpm install -r 
+
+RUN pnpm run build 
+
+FROM node:alpine as production
+
+ARG NODE_ENV
+ARG PORT
+ARG DATABASE_USER
+ARG DATABASE_PASSWORD
+ARG DATABASE_HOST
+ARG DATABASE_NAME
+ARG DATABASE_PORT
+ARG DATABASE_SYNC
+ARG JWT_SECRET
+ARG JWT_EXPIRATION
+
+
+ENV NODE_ENV=${NODE_ENV}
+ENV PORT=${PORT}
+ENV DATABASE_USER=$D{ATABASE_USER}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+ENV DATABASE_HOST=${DATABASE_HOST}
+ENV DATABASE_NAME=${DATABASE_NAME}
+ENV DATABASE_PORT=${DATABASE_PORT}
+ENV DATABASE_SYNC=${DATABASE_SYNC}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV JWT_EXPIRATION=${JWT_EXPIRATION}}
+
+
+
+
+
+WORKDIR /usr/src
+
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+
+RUN npm install -g pnpm
+
+RUN pnpm install --prod
+
+COPY --from=development /usr/src/dist ./dist
+
+CMD ["node", "dist/bin/wwww"]

@@ -5,13 +5,13 @@ export abstract class BaseController {
   protected req: express.Request
   protected res: express.Response
 
-  protected abstract executeImpl(): Promise<void | any>
+  // protected abstract executeImpl(): Promise<void | any>
 
-  public execute(req: express.Request, res: express.Response): void {
+  public execute = async (req: express.Request, res: express.Response, controllerFunction: () => Promise<void | any>): Promise<void> => {
     this.req = req
     this.res = res
 
-    this.executeImpl()
+    controllerFunction()
   }
 
   public static jsonResponse(res: express.Response, code: number, message: string) {
@@ -31,7 +31,7 @@ export abstract class BaseController {
   }
 
   public clientError(message?: string) {
-    return BaseController.jsonResponse(this.res, 400, message ? message : "Unauthorized")
+    return BaseController.jsonResponse(this.res, 400, message ? message : "Invalid Request")
   }
 
   public unauthorized(message?: string) {

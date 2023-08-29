@@ -1,0 +1,3 @@
+// import { UniqueEntityID } from "../../../../UniqueEntityID"
+// export const MockJobAggregateRootId = new UniqueEntityID("999")
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW9ja0pvYkFnZ3JlZ2F0ZVJvb3RJZC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uL3NyYy9saWIvY29yZS9kb21haW4vZXZlbnRzL3Rlc3RzL21vY2tzL2RvbWFpbi9tb2NrSm9iQWdncmVnYXRlUm9vdElkLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDhEQUE4RDtBQUU5RCxrRUFBa0UifQ==

@@ -25,7 +25,7 @@ export class Guard {
     }
   }
 
-  protected static validateAndError(data: any) {
+  public static validateAndError(data: any) {
     const errors = validateSync(data, {
       whitelist: true,
     });
