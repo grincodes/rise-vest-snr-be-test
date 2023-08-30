@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from "typeorm"
 import { AbstractRepo } from "../../../../lib/infra/db/AbstractRepo"
-import { readConnection } from "../../../../lib/infra/db/DatabaseModule"
+import { readConnection, writeConnection } from "../../../../lib/infra/db/DatabaseModule"
 import { Comments } from "../../../comments/infra/entity/CommentEntity.model"
 import { Users } from "../../../users/infra/entity/UserEntity.model"
 import { Posts } from "../entity/PostEntity.model"
@@ -42,44 +42,19 @@ export class PostRepo extends AbstractRepo<Posts> {
    public async getTop3UsersWithLatestCommentsAndPosts(): Promise<any> {
 
     try {
-
-    const res = readConnection.getRepository(Users)
-      .createQueryBuilder('user')
-      .select(['user.id', 'user.name', 'post.title', 'comment.content'])
-      .leftJoin('user.posts', 'post')
-      .leftJoin(
-        (subQuery) => {
-          subQuery
-            .select(['MAX(comment.createdAt) as maxCreatedAt', 'comment.postId'])
-            .from(Comments, 'comment')
-            .groupBy('comment.postId')
-            // .as('latestComment');
-        },
-        'lc',
-        'lc.postId = post.id'
-      )
-      .leftJoin(
-        (subQuery) => {
-          subQuery
-            .select(['COUNT(post.id) as postCount', 'post.userId'])
-            .from(Posts, 'post')
-            .groupBy('post.userId')
-            // .as('postCount');
-        },
-        'upc',
-        'upc.userId = user.id'
-      )
-      .leftJoin('commentRepository', 'comment', 'comment.postId = post.id AND comment.createdAt = lc.maxCreatedAt')
-      .orderBy('upc.postCount', 'DESC')
-      .limit(3).getMany();
-
-
-
  
+const res = await readConnection.getRepository(Users).query(`SELECT
+  users.id,
+  users."firstName",
+  posts.title,
+  comments.content,
+  MAX(comments."createdAt") OVER (PARTITION BY posts."userId") AS latest_comment_created_at
+FROM users
+LEFT JOIN posts ON users.id = posts."userId"
+INNER JOIN comments ON posts.id = comments."postId"
+ORDER BY (SELECT COUNT(posts.id) FROM posts WHERE posts."userId" = users.id) DESC
+LIMIT 3;`);
 
-console.log('====================================');
-console.log(res);
-console.log('====================================');
    
     return res
       
